@@ -1,0 +1,31 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Meisterstück</title><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Meisterstück">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#262626">
+<script>
+/* Service Worker: speichert die App auf dem iPad und holt neue Fassungen, sobald Internet da ist */
+(function(){
+ if(!('serviceWorker' in navigator))return;
+ var hatteAlt=!!navigator.serviceWorker.controller, schon=false;
+ function hinweis(){
+  if(schon)return;schon=true;
+  var d=document.createElement('div');
+  d.textContent='Neue Fassung geladen – hier tippen zum Anzeigen';
+  d.setAttribute('style','position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:99999;background:#1F4E79;color:#fff;font:600 15px system-ui,sans-serif;padding:12px 18px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.35);cursor:pointer');
+  d.onclick=function(){location.reload()};
+  (document.body||document.documentElement).appendChild(d);
+ }
+ navigator.serviceWorker.addEventListener('controllerchange',function(){if(hatteAlt)hinweis();});
+ window.addEventListener('load',function(){
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){
+   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')r.update().catch(function(){});});
+  }).catch(function(){});
+ });
+})();
+</script>
+</head><body style="background:#262626"><script>location.replace("Stueckliste_App_Meisterstueck_KI.html"+location.hash)</script></body></html>
